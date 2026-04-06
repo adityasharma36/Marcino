@@ -14,7 +14,9 @@ const redis = require('../db/redis')
 async function registerUser(req, res) {
 
     // 🔹 request body se data nikal rahe hain
-    const { username, email, password, fullName: { firstName, lastName } ,role} = req.body;
+   const { username, email, password, fullName = {}, role } = req.body;
+
+const { firstName, lastName } = fullName;
 
     // 🔍 check karo user already exist karta hai ya nahi
     const isUserAlreadyPresent = await userModel.findOne({
