@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 
 connectToDb()
     .then(() => {
-        // Hinlish: DB ready hone ke baad hi server start karna best practice hai.
+        // DB ready hone ke baad hi server start karna best practice hai.
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         });

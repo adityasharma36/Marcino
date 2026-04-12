@@ -14,7 +14,7 @@ const app = express();
 
 
 app.use(express.json());
-// Hinlish: cookies read karne ke liye cookie-parser middleware lagaya hai.
+// Cookies read karne ke liye cookie-parser middleware lagaya hai.
 app.use(cookieparser());
 
 app.use('/api/products', productRoutes);

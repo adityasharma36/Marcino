@@ -2,8 +2,9 @@
 const jwt = require('jsonwebtoken');
 
 function createAuthMiddleware(roles = ['user']) {
+    
     return function authMiddleware(req, res, next) {
-        // Hinlish: pehle cookie token check karo, warna Bearer token header se lo.
+        // Cookie token ko priority di gayi hai, header fallback hai.
         const authHeader = req.headers.authorization || '';
         const headerToken = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
         const token = req.cookies?.token || headerToken;

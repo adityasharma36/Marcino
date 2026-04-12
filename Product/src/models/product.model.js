@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        // Hinlish: old field name discription rakha hai taaki existing data break na ho.
+        // Old field name discription rakha hai taaki existing data break na ho.
         discription: {
             type: String
         },
@@ -36,6 +36,10 @@ const productSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+// query ko fast karne ke liye index create karte hai 
+
+productSchema.index({title:'text',discription:'text'})
 
 const productModel = mongoose.model('product', productSchema);
 
