@@ -11,8 +11,12 @@ const redis = require('../db/redis')
 // Ye middleware protected routes ke liye auth check karega
 async function authMiddleWare(req,res,next){
 
-    // Cookie se token nikal rahe hain
-    const token = req.cookies.token;
+    // Cookie ya Authorization header se token nikal rahe hain
+    const authHeader = req.headers.authorization || '';
+    const headerToken = authHeader.startsWith('Bearer ')
+        ? authHeader.split(' ')[1]
+        : null;
+    const token = req.cookies?.token || headerToken;
 
     // Token nahi mila to request reject kar do
     if(!token){

@@ -10,6 +10,17 @@ const jwt = require('jsonwebtoken');
 // Redis client, logout ke time token blacklist karne ke liye
 const redis = require('../db/redis')
 
+function getCookieOptions() {
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    return {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+    };
+}
+
 // ================= REGISTER =================
 async function registerUser(req, res) {
 
@@ -57,11 +68,8 @@ const { firstName, lastName } = fullName;
     );
 
     // 🍪 cookie set karo
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 24 * 60 * 60 * 1000
-    });
+    // Local HTTP pe cookie send ho sake, isliye secure flag environment ke hisaab se lagaya hai.
+    res.cookie('token', token, getCookieOptions());
 
     // ✅ response (password nahi bhejna)
     res.status(201).json({
@@ -128,12 +136,8 @@ async function loginUser(req, res) {
         );
 
         // 🍪 secure cookie
-        res.cookie('token', token, {
-            httpOnly: true,     // JS access nahi kar sakta
-            secure: true,       // only HTTPS
-            sameSite: 'Strict', // CSRF protection 🔥
-            maxAge: 24 * 60 * 60 * 1000
-        });
+        // Dev me HTTP par bhi cookie kaam kare, production me stricter policy rahe.
+        res.cookie('token', token, getCookieOptions());
 
         // ✅ response (minimal data)
         return res.status(200).json({
@@ -161,6 +165,8 @@ async function loginUser(req, res) {
 }
 async function getCurrentUser(req,res){
 
+    // console.log(req.user) // auth middleware se set hua req.user check karne ke liye
+
     // auth middleware ne req.user set kiya hota hai, wahi response me bhej rahe hain
     return res.status(200).json({
         message:'user fetch successfully',
@@ -180,10 +186,7 @@ async function logoutUser(req,res) {
     }
 
     // Client side se token cookie clear kar rahe hain
-    res.clearCookie('token',{
-        httpOnly:true,
-        secure:true
-    })
+    res.clearCookie('token', getCookieOptions())
 
     // Logout success response
     return res.status(200).json({
@@ -229,7 +232,7 @@ async function addUserAddress(req,res){
                 isDefault
             }
         }
-    },{new:true})
+    },{returnDocument:'after'})
 
     if(!user){
         return res.status(404).json({
@@ -261,7 +264,7 @@ async function removeUserAddress(req,res){
                 addresses: { _id: addressId }
             }
         },
-        { new: true }
+        { returnDocument: 'after' }
     );
 
     if(!user){
