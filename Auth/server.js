@@ -7,9 +7,12 @@ const app = require('./src/app')
 // Database connect karne wali helper file le rahe hain
 const connectToDB = require('./src/db/db')
 
+const {connect} = require('./src/broker/broker')
+
 
 // Pehle DB connect hoga, phir server chalega
 connectToDB().then(()=>{
+connect();
 
     // App ko port 3000 par chala rahe hain
     app.listen(3000,()=>{

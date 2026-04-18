@@ -7,6 +7,8 @@ const bcrypts = require('bcryptjs');
 // JWT token banane aur verify flow ke liye
 const jwt = require('jsonwebtoken');
 
+const { publishToQueue } = require('../broker/broker');
+
 // Redis client, logout ke time token blacklist karne ke liye
 const redis = require('../db/redis')
 
@@ -54,6 +56,14 @@ const { firstName, lastName } = fullName;
         fullName: { firstName, lastName },
         role:role || 'user'
     });
+
+       await publishToQueue('Auth_Notification_user_registered', {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            fullName: user.fullName
+        });
 
     // 🔑 JWT token generate
     const token = jwt.sign(
