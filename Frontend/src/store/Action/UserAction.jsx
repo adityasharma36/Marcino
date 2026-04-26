@@ -17,7 +17,13 @@ export const registerUser = (userData)=> async (dispatch)=>{
 
     return response.data;
 }
+export const currentUser = (credentials)=> async (dispatch)=>{
 
+    const response = await Axios.get('/auth/me',credentials);
+
+    return response;
+
+}
 export const loginUser = (credentials) => async (dispatch) => {
 
     console.log("Logging in with credentials:", credentials);
@@ -42,4 +48,8 @@ export const logoutUser = () => async (dispatch) => {
     console.log("Received response from logout API:", response.data);
 
     dispatch(removeUser());
+
+    router.reference();
+    
+
 };

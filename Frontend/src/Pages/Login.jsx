@@ -4,7 +4,9 @@ import {useForm} from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../store/Action/UserAction";
+import { currentUser, loginUser } from "../store/Action/UserAction";
+
+import { useSelector } from "react-redux";
 
 
 function Login(){
@@ -13,7 +15,9 @@ function Login(){
 
     const [loading, setLoading] = useState(false);
 
+    
 
+    
 
     const {handleSubmit,register,formState:{errors}}= useForm({
 
@@ -62,8 +66,17 @@ function Login(){
 
                 await dispatch(loginUser(payload));
 
+                // await dispatch(currentUser(payload));
+
+                // console.log("isLogin data",isLogin.data);
+
                 toast.success("Logged in successfully!");
-                
+
+
+
+                // const userLogin = useSelector((state)=> state.user.users?.[0]);
+                // console.log(userLogin);
+                    
                 navigate("/Home");
                 
             } catch (err) {

@@ -47,7 +47,7 @@ function Register(){
 
             await dispatch(registerUser(payload));
             toast.success("Account created successfully! Please sign in.");
-            navigate("/");
+            navigate("/Login");
         }
         catch(err){
             setError(getApiErrorMessage(err));

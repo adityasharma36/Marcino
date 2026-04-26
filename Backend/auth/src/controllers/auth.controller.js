@@ -52,6 +52,7 @@ async function registerUser(req, res) {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
+            sameSite: 'strict',
             maxAge: 24 * 60 * 60 * 1000, // 1 day
         })
 
@@ -101,6 +102,7 @@ async function loginUser(req, res) {
             httpOnly: true,
             secure: true,
             maxAge: 24 * 60 * 60 * 1000,
+            sameSite: 'strict'
         });
 
         return res.status(200).json({
@@ -136,8 +138,11 @@ async function logoutUser(req, res) {
     }
 
     res.clearCookie('token', {
+
         httpOnly: true,
+        
         secure: true,
+
     });
 
     return res.status(200).json({ message: "Logged out successfully" });

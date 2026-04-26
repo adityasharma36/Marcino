@@ -17,18 +17,25 @@ const userSlice = createSlice({
     reducers:{
 
         setUser:(state,action)=>{
-            console.log("Setting user in Redux store:", action.payload);
-            state.user = action.payload;
 
-            console.log("Updated user state:", state.user);
+            console.log("Setting user in Redux store:", action.payload);
+
+            state.users = action.payload;
+
+            console.log("state is ",state.users);
+
+            console.log("Updated user state:", state.users);
 
         }
         ,
 
         removeUser:(state)=>{
+
             console.log("Removing user from Redux store");
+
             console.log('state', state);
-            state.user = null;
+
+            state.users = null;
             
         }
     }
