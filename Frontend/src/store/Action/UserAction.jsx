@@ -49,7 +49,6 @@ export const logoutUser = () => async (dispatch) => {
 
     dispatch(removeUser());
 
-    router.reference();
-    
+    return response.data;
 
 };

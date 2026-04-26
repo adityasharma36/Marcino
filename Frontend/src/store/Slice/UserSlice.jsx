@@ -20,11 +20,11 @@ const userSlice = createSlice({
 
             console.log("Setting user in Redux store:", action.payload);
 
-            state.users = action.payload;
+            state.user = action.payload;
 
-            console.log("state is ",state.users);
+            console.log("state is ",state.user);
 
-            console.log("Updated user state:", state.users);
+            console.log("Updated user state:", state.user);
 
         }
         ,
@@ -35,7 +35,7 @@ const userSlice = createSlice({
 
             console.log('state', state);
 
-            state.users = null;
+            state.user = null;
             
         }
     }
