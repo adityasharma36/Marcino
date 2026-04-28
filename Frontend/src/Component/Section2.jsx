@@ -1,8 +1,16 @@
 import React from 'react'
-
+import { useNavigate } from 'react-router-dom'
 const cirImg = "https://sanity-cdn.fabfitfun.com/images/q4cs1xgp/production/f8a1988cc0c5d872f5644240f5b6ab8444720886-400x400.png?fm=webp&q=100&w=1200&width=1200"
 const mainImg = 'https://sanity-cdn.fabfitfun.com/images/q4cs1xgp/production/26759c6cbed845be0e1f3f3d4d1ffd01a46bba5d-988x658.jpg?fm=webp&q=100&w=1920&width=1920'
 const Section2 = () => {
+
+     const navigate = useNavigate()
+
+  const getStarted = ()=>{
+
+    navigate('/Product');
+    
+  }
   return (
     <div className='w-full h-screen flex flex-col items-center justify-center'>
 
@@ -37,7 +45,7 @@ const Section2 = () => {
         </div>
 
         <div className='w-full flex justify-center '>
-            <button className='px-5 py-2 text-center rounded-xl border hover:-translate-x-2 hover:text-black border-amber-600 cursor-pointer hover:scale-110 transition hover:-translate-y-2 bg-linear-to-r from-orange-300 to-yellow-500'>GET STARTED</button>
+            <button onClick={getStarted} className='px-5 py-2 text-center rounded-xl border hover:-translate-x-2 hover:text-black border-amber-600 cursor-pointer hover:scale-110 transition hover:-translate-y-2 bg-linear-to-r from-orange-300 to-yellow-500'>GET STARTED</button>
         </div>
 
 
