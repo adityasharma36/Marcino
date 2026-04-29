@@ -50,8 +50,8 @@ const SamplePrevArrow = ({ className, style, onClick }) => {
 
 const Carosol = () => {
 
-    const {data} = useSelector((state)=>state.product.products);
-    console.log(data);
+  const products = useSelector((state)=>state.product.products);
+  console.log(products);
 
 
 
@@ -69,24 +69,19 @@ const Carosol = () => {
 
     }
 
-    // const uniqueProduct = useMemo(()=>{
+    const uniqueProduct = useMemo(() => {
+      const productList = Array.isArray(products) ? products : products?.data;
 
-    //     if(data?.length ==0) return [];
+      if (!Array.isArray(productList)) return [];
 
-    //     const temp = [];
-
-    //     for(let items of data){
-    //         temp.push(items);
-    //         if(temp.length==7) break;
-    //     }
-    //     return temp;
-    // },[data])
-    // console.log(uniqueProduct);
+      return productList.slice(0, 7);
+    }, [products])
 
   return (
      <div>
+      {uniqueProduct.length > 0 ? (
       <Slider {...setting}>
-        {data && data.map((item, index) => (
+        {uniqueProduct.map((item, index) => (
           <div
             key={item.id || index}
             className="bg-linear-to-r from-[#0f0c29] via-[#302b63] to-[#24243e]"
@@ -112,7 +107,7 @@ const Carosol = () => {
 
               <div>
                 <img
-                  src={item?.images?.[0].url || item.images}
+                  src={item?.images?.[0]?.url || item?.images?.[0] || item?.image || ""}
                   alt={item.title}
                   className="rounded-full bg-white w-100 hover:scale-105 transition-all shadow-2xl shadow-red-400"
                 />
@@ -121,6 +116,11 @@ const Carosol = () => {
           </div>
         ))}
       </Slider>
+      ) : (
+        <div className="flex h-96 items-center justify-center text-xl text-gray-400">
+          Loading carousel...
+        </div>
+      )}
     </div>
   )
 }

@@ -15,7 +15,7 @@ const UseInfiniteFetch = () => {
     const fetchData = async ()=>{
         try {
 
-            const res = await ProductAxios.get(`/?_limit=6&_start=${productList.length}`);
+            const res = await ProductAxios.get(`/?_limit=6&_start=${productsList.length}`);
 
             if(res.data.length===0){
                 setMore(false);

@@ -8,7 +8,7 @@ const Section2 = () => {
 
   const getStarted = ()=>{
 
-    navigate('/Product');
+    navigate('/Main');
     
   }
   return (

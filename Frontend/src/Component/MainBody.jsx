@@ -9,7 +9,7 @@ function MainBody() {
 
   const getStarted = ()=>{
 
-    navigate('/Product');
+    navigate('/Main');
     
   }
   return (
