@@ -84,7 +84,7 @@ const Carosol = () => {
         {uniqueProduct.map((item, index) => (
           <div
             key={item.id || index}
-            className="bg-linear-to-r from-[#0f0c29] via-[#302b63] to-[#24243e]"
+            className="bg-linear-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] mt-20"
           >
             <div className="flex gap-10 justify-center h-150 items-center px-4">
               <div className="space-y-6">
