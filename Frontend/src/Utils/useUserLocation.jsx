@@ -28,6 +28,7 @@ const useUserLocation = () => {
                     lat: response.data.lat,
                     lon: response.data.lon,
                 };
+                console.log(locat);
                 console.debug("useUserLocation: sending payload", locat);
                 await dispatch(userLocation(locat));
                 

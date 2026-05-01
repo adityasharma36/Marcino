@@ -20,12 +20,13 @@ export const userLocation = (credentials) => async (dispatch) => {
             lon: credentials.lon ?? credentials.longitude ?? null,
         };
 
-        console.debug("userLocation: sending mapped payload ->", requestBody);
+        // console.debug("userLocation: sending mapped payload ->", requestBody);
         const response = await Axios.post("/auth/users/me/addresses", requestBody);
+        
         const payload = response?.data?.addresses ?? response?.data ?? [];
 
         dispatch(setAddress(payload));
-        console.log("set successfully")
+        // console.log("set successfully")
         return response.data;
     } catch (error) {
         console.error("userLocation error:", {
