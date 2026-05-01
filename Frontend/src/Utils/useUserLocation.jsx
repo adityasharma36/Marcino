@@ -7,7 +7,7 @@ const useUserLocation = () => {
 
     const dispatch = useDispatch();
 
-    const [location ,setLocation]= useState("");
+    // const [location ,setLocation]= useState("");
     const [openBox,setOpenBox]= useState(false);
 
     const getLocation = async ()=>{
@@ -28,10 +28,10 @@ const useUserLocation = () => {
                     lat: response.data.lat,
                     lon: response.data.lon,
                 };
-                console.log(locat);
+                
                 console.debug("useUserLocation: sending payload", locat);
                 await dispatch(userLocation(locat));
-                
+                setOpenBox(false);
                 
             } catch (error) {
                 console.log(error)
@@ -45,7 +45,7 @@ useEffect(()=>{
 
     },[])
 
-  return {location,setLocation,openBox,setOpenBox,getLocation}
+  return {openBox,setOpenBox,getLocation}
 }
 
 

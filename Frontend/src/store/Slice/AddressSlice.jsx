@@ -4,11 +4,16 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { set } from "react-hook-form";
 
 const normalizeAddressPayload = (payload)=>{
-    if(Array.isArray(payload)) return payload;
+    if (!payload) return [];
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload?.addresses)) return payload.addresses;
 
-    if(Array.isArray(payload?.data)) return payload.data;
-
-    if(Array.isArray(payload?.addresses)) return payload.addresses;
+    // If backend returned a single address object, wrap it in an array.
+    if (typeof payload === 'object') {
+        const single = payload.address ?? payload;
+        if (single && typeof single === 'object') return [single];
+    }
 
     return [];
 }

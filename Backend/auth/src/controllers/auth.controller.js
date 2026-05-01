@@ -166,10 +166,14 @@ async function getUserAddresses(req, res) {
 }
 
 async function addUserAddress(req, res) {
-    console.log('fnc call');
+
     const id = req.user.id
 
-    const { street, city, state, zipcode, country, isDefault } = req.body;
+    const { street, city, state, zipcode, pincode, country, isDefault } = req.body;
+    const resolvedZipcode = zipcode || pincode;
+
+    console.log('addUserAddress req.body:', req.body);
+    console.log(state,street,city,resolvedZipcode,country);
 
     const user = await userModel.findOneAndUpdate({ _id: id }, {
         $push: {
@@ -177,12 +181,14 @@ async function addUserAddress(req, res) {
                 street,
                 city,
                 state,
-                zipcode,
+                zipcode: resolvedZipcode,
                 country,
                 isDefault
             }
         }
     }, { new: true });
+
+    console.log(user);
 
     if (!user) {
         return res.status(404).json({ message: "User not found" });

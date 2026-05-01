@@ -1,9 +1,16 @@
 import React from 'react'
 import useUserLocation from '../Utils/useUserLocation'
+import { useSelector } from 'react-redux';
 
 const ProductHeader = () => {
+  
+    const {setOpenBox,openBox}= useUserLocation();
 
-    const {getLocation}= useUserLocation();
+    const address = useSelector((state)=>state?.address?.addresses) || [];
+
+    
+
+    
   return (
     <div className='flex gap-10 max-w-full p-5 items-center '>
 

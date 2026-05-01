@@ -9,6 +9,18 @@ const respondWithValidationErrors = (req, res, next) => {
     next();
 }
 
+const normalizePincode = (value, { req }) => {
+    const match = String(value || '').match(/\b(\d{5,6})\b/);
+
+    if (!match) {
+        throw new Error('Pincode must be at least 5 digits');
+    }
+
+    req.body.zipcode = match[1];
+    req.body.pincode = match[1];
+    return true;
+};
+
 
 const registerUserValidations = [
     body("username")
@@ -76,14 +88,18 @@ const addUserAddressValidations = [
         .withMessage('State must be a string')
         .notEmpty()
         .withMessage('State is required'),
-    body('zipcode')
+    body('pincode')
+        .optional()
         .isString()
         .withMessage('Pincode must be a string')
-        .notEmpty()
-        .withMessage('Pincode is required')
         .bail()
-        .matches(/^\d{4,}$/)
-        .withMessage('Pincode must be at least 4 digits'),
+        .custom(normalizePincode),
+    body('zipcode')
+        .optional()
+        .isString()
+        .withMessage('Pincode must be a string')
+        .bail()
+        .custom(normalizePincode),
     body('country')
         .isString()
         .withMessage('Country must be a string')
@@ -100,6 +116,13 @@ const addUserAddressValidations = [
         .optional()
         .isBoolean()
         .withMessage('isDefault must be a boolean'),
+    (req, res, next) => {
+        if (!req.body.pincode && !req.body.zipcode) {
+            return res.status(400).json({ errors: [ { msg: 'Pincode is required' } ] });
+        }
+
+        next();
+    },
     respondWithValidationErrors
 ]
 

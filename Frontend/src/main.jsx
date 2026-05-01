@@ -9,7 +9,7 @@ import { store } from './store/Store';
 import { ToastContainer , Bounce} from 'react-toastify';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
     <Provider store={store}>
       <BrowserRouter>
         <App />
@@ -28,5 +28,5 @@ createRoot(document.getElementById('root')).render(
         />
       </BrowserRouter>
     </Provider>
-  </StrictMode>,
+
 )
