@@ -32,6 +32,9 @@ const createProductValidators = [
         .optional()
         .isIn([ 'USD', 'INR' ])
         .withMessage('priceCurrency must be USD or INR'),
+    body('category').isString().withMessage('category must be string')
+    .notEmpty().withMessage("category must not be empty")
+        ,
     handleValidationErrors
 ];
 

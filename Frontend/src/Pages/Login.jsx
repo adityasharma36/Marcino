@@ -77,7 +77,7 @@ function Login(){
                 // const userLogin = useSelector((state)=> state.user.users?.[0]);
                 // console.log(userLogin);
                     
-                navigate("/");
+                navigate("/Main");
                 
             } catch (err) {
                 setError(getApiErrorMessage(err));

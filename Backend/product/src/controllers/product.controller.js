@@ -8,7 +8,7 @@ const { publishToQueue } = require("../broker/borker")
 // Accepts multipart/form-data with fields: title, description, priceAmount, priceCurrency, images[] (files)
 async function createProduct(req, res) {
     try {
-        const { title, description, priceAmount, priceCurrency = 'INR' } = req.body;
+        const { title, description, priceAmount, priceCurrency = 'INR', category } = req.body;
         const seller = req.user.id; // Extract seller from authenticated user
 
         const price = {
@@ -19,7 +19,7 @@ async function createProduct(req, res) {
         const images = await Promise.all((req.files || []).map(file => uploadImage({ buffer: file.buffer })));
 
 
-        const product = await productModel.create({ title, description, price, seller, images });
+        const product = await productModel.create({ title, description, price, seller, images , category });
 
         await publishToQueue("PRODUCT_SELLER_DASHBOARD.PRODUCT_CREATED", product);
         await publishToQueue("PRODUCT_NOTIFICATION.PRODUCT_CREATED", {

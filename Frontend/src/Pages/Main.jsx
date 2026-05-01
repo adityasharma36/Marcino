@@ -1,7 +1,6 @@
 
-import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "../store/Action/ProductAction";
-import { Suspense, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Suspense } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from '../assests/Loading4.webm'
 import ProductCard from "../Component/ProductCard";
@@ -16,8 +15,6 @@ import Header from "../Component/Header";
 
 
 const Main = () => {
-
-  const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
 
 
@@ -28,17 +25,11 @@ const Main = () => {
     // console.log(products)
 
   const { pro: productsList, more: hasMore, fetchData } = UseInfiniteFetch();
+  const infiniteProducts = Array.isArray(productsList)
+    ? productsList
+    : productsList?.data || [];
 
-  console.log("productList Pro",productsList.data);
-
-
-  useEffect(() => {
-    dispatch(getProduct());
-  }, [dispatch]);
-
-  useEffect(() => {
-
-  }, [products]);
+  console.log("productList Pro", infiniteProducts);
 
   return (
     <>
@@ -52,7 +43,7 @@ const Main = () => {
           <h1 className="text-2xl font-extralight m-6">Product Pagess</h1>
 
           <InfiniteScroll
-            dataLength={productsList?.data.length}
+            dataLength={infiniteProducts.length}
             next={fetchData}
             hasMore={hasMore}
             loader={ <footer className='bg-gray-900 text-gray-200 py-10'>
@@ -112,9 +103,9 @@ const Main = () => {
           >
             <div className="grid grid-cols-4 gap-4 m-3">
               
-            {productsList?.data?.map((item) => (
+            {infiniteProducts.map((item, index) => (
              <Suspense
-             key={item.id || item._id}
+             key={item._id || item.id || `product-${index}`}
               fallback = {
                 <h1 className="text-center text-3xl text-gray-300">Loading.....</h1>
               }

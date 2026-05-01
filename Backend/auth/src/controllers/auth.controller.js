@@ -166,10 +166,10 @@ async function getUserAddresses(req, res) {
 }
 
 async function addUserAddress(req, res) {
-
+    console.log('fnc call');
     const id = req.user.id
 
-    const { street, city, state, pincode, country, isDefault } = req.body;
+    const { street, city, state, zipcode, country, isDefault } = req.body;
 
     const user = await userModel.findOneAndUpdate({ _id: id }, {
         $push: {
@@ -177,7 +177,7 @@ async function addUserAddress(req, res) {
                 street,
                 city,
                 state,
-                pincode,
+                zipcode,
                 country,
                 isDefault
             }

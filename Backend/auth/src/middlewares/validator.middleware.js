@@ -76,7 +76,7 @@ const addUserAddressValidations = [
         .withMessage('State must be a string')
         .notEmpty()
         .withMessage('State is required'),
-    body('pincode')
+    body('zipcode')
         .isString()
         .withMessage('Pincode must be a string')
         .notEmpty()
