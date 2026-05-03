@@ -1,7 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { userLocation } from '../store/Action/AddressAction';
+
+let locationRequestInFlight = false;
 
 const useUserLocation = () => {
 
@@ -11,8 +13,10 @@ const useUserLocation = () => {
     const [openBox,setOpenBox]= useState(false);
 
     const getLocation = async ()=>{
+        if (locationRequestInFlight) return;
 
-        
+        locationRequestInFlight = true;
+
         navigator.geolocation.getCurrentPosition(async pos =>{
 
             const {latitude,longitude}= pos.coords;
@@ -35,15 +39,11 @@ const useUserLocation = () => {
                 
             } catch (error) {
                 console.log(error)
+            } finally {
+                locationRequestInFlight = false;
             }
         })
     }
-
-useEffect(()=>{
-
-    getLocation();
-
-    },[])
 
   return {openBox,setOpenBox,getLocation}
 }
