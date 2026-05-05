@@ -153,7 +153,7 @@ function Register(){
                
                 
                 <button disabled={loading} type="submit" className=" bg-blue-500 w-full text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-blue-300">{loading ? "Creating account..." : "Sign Up"}</button>
-                <p className="text-center text-sm text-gray-500">Already have an account? <Link to="/signin" className="text-blue-500 hover:underline">Sign in</Link></p>
+                <p className="text-center text-sm text-gray-500">Already have an account? <Link to="/Login" className="text-blue-500 hover:underline">Sign in</Link></p>
             
             </form>
         </div>

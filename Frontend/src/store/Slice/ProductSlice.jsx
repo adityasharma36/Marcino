@@ -36,6 +36,7 @@ const dedupeProducts = (products) => {
 
 const initialState = {
     products: [],
+    selectedProduct: null,
 };
 
 const productSlice = createSlice({
@@ -51,9 +52,18 @@ const productSlice = createSlice({
             const incomingProducts = normalizeProductsPayload(action.payload);
             state.products = dedupeProducts([...currentProducts, ...incomingProducts]);
         },
+
+        setSelectedProduct: (state, action) => {
+            state.selectedProduct = action.payload ?? null;
+        },
+
+        clearSelectedProduct: (state) => {
+            state.selectedProduct = null;
+        },
     },
 });
 
-export const { setProduct, lazyLoadingState } = productSlice.actions;
+export const { setProduct, lazyLoadingState, setSelectedProduct, clearSelectedProduct } =
+    productSlice.actions;
 
 export default productSlice.reducer;

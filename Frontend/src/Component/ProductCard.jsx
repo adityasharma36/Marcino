@@ -1,11 +1,13 @@
 import { IoCartOutline } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { getProductById } from "../store/Action/ProductAction";
 // import useCart from "../Context/useCart";
 
 const ProductCard = ({ data }) => {
 
   
-
+  const dispatch = useDispatch();
 
 
   return (
@@ -33,7 +35,9 @@ const ProductCard = ({ data }) => {
       <button
         onClick={(e) => {
           e.preventDefault();   // stops Link navigation
-          console.log('hello')
+
+          dispatch(getProductById(data));
+          
           // addToCart(data);
         }}
         className="bg-red-500 px-3 py-2 text-lg rounded-md text-white w-full cursor-pointer flex gap-2 items-center justify-center font-semibold"
