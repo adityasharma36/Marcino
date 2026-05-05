@@ -33,6 +33,7 @@ const ProductCard = ({ data }) => {
       <button
         onClick={(e) => {
           e.preventDefault();   // stops Link navigation
+          console.log('hello')
           // addToCart(data);
         }}
         className="bg-red-500 px-3 py-2 text-lg rounded-md text-white w-full cursor-pointer flex gap-2 items-center justify-center font-semibold"

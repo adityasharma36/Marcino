@@ -4,10 +4,14 @@ import ProductFilter from '../ProductComponent/ProductFilter'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProduct } from '../store/Action/ProductAction'
 import ProductCard from '../Component/ProductCard'
+import Lottie from 'lottie-react'
+import notFound from '../assests/notfound.json'
+import Pagination from '../ProductComponent/Pagination'
 
 const Product = () => {
 
   const dispatch = useDispatch();
+
   const products = useSelector(state=>state.product.products)
 
   const productList = Array.isArray(products) ? products : products?.data || [];
@@ -44,8 +48,11 @@ const Product = () => {
     setPrice(value);
     setPage(1);
   }
-  console.log(search)
 
+  const pageHandler = (value)=>{
+    setPage(value);
+  }
+  
   // console.log(productList)
 
 
@@ -59,7 +66,10 @@ const Product = () => {
     ))
   },[search,brand,category,price,productList])
 
-  console.log(filterProdut)
+  const dynamicPage = Math.ceil(filterProdut?.length / 16)
+
+  
+  // console.log(filterProdut)
 
   return (
     <>
@@ -72,20 +82,23 @@ const Product = () => {
         />
 
         <div className='flex-1'>
-          {filterProdut.length > 0 ? (
-            <div className='grid grid-cols-4 gap-4'>
-              {filterProdut.map((item, index) => (
-                <Suspense
-                  key={item._id || item.id || `product-${index}`}
-                  fallback={<h1 className="text-center text-xl text-gray-300">Loading.....</h1>}
-                >
-                  <ProductCard data={item} />
-                </Suspense>
-              ))}
+          {filterProdut?.length>0 ? (
+            
+            <div className='flex flex-col items-center w-full'>
+              <div className='grid grid-cols-4 gap-4 mt-10'>
+                {filterProdut.slice((page-1)*16,page*16)
+                .map(product=>(
+                  <ProductCard key={product.id || product._id} data={product}/>
+                ))
+                
+                }
+
+              </div>
+              <Pagination page = {page} pageHandler = {pageHandler} dynamicPage = {dynamicPage} />
             </div>
           ) : (
-            <div className='flex items-center justify-center h-96'>
-              <h1 className='text-2xl text-gray-400'>No products found</h1>
+            <div className='flex items-center justify-center mt-10 w-full'>
+              <Lottie animationData={notFound} />
             </div>
           )}
         </div>
