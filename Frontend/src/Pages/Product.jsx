@@ -7,6 +7,7 @@ import ProductCard from '../Component/ProductCard'
 import Lottie from 'lottie-react'
 import notFound from '../assests/notfound.json'
 import Pagination from '../ProductComponent/Pagination'
+import Footer from '../Component/Footer'
 
 const Product = () => {
 
@@ -103,7 +104,7 @@ const Product = () => {
           )}
         </div>
       </div>
-      
+      <Footer/>
     </>
   )
 }

@@ -22,11 +22,11 @@ const Footer = () => {
         <div className='mb-6 md:mb-0'>
             <h3 className='text-xl font-semibold'>Customer Service</h3>
             <ul className='mt-2 text-sm space-y-2'>
-                <li className='cursor-pointer hover:scale-110 hover:-translate-y-1 hover:text-gray-400'>Contact Us</li>
-                <li className='cursor-pointer hover:scale-110 hover:-translate-y-1 hover:text-gray-400'>Shipping & Returns</li>
-                <li className='cursor-pointer hover:scale-110 hover:-translate-y-1 hover:text-gray-400'>FAQs</li>
-                <li className='cursor-pointer hover:scale-110 hover:-translate-y-1 hover:text-gray-400' >Order Tracking</li>
-                <li className='cursor-pointer hover:scale-110 hover:-translate-y-1 hover:text-gray-400'>Size Guide</li>
+                <li className='cursor-pointer   hover:text-blue-400'>Contact Us</li>
+                <li className='cursor-pointer   hover:text-blue-400'>Shipping & Returns</li>
+                <li className='cursor-pointer   hover:text-blue-400'>FAQs</li>
+                <li className='cursor-pointer   hover:text-blue-400' >Order Tracking</li>
+                <li className='cursor-pointer   hover:text-blue-400'>Size Guide</li>
             </ul>
         </div>
         {/* social media links */}

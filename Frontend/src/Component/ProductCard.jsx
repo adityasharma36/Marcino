@@ -15,7 +15,7 @@ const ProductCard = ({ data }) => {
     <div className="border relative border-gray-100 rounded-2xl cursor-pointer hover:scale-105 hover:shadow-2xl transition-all p-2 h-max">
 
       {/* ✅ Only image/title area clickable */}
-      {/* <Link to={`/Product-Details/${data.id}`}> */}
+      <Link to={`/Product/${data._id}`}>
         <img
           src={data.images?.[0].url || data.thumbnail}
           alt={data.thumbnail}
@@ -45,6 +45,7 @@ const ProductCard = ({ data }) => {
         <IoCartOutline className="w-6 h-6" />
         Add To Cart
       </button>
+      </Link>
 
     </div>
   );
