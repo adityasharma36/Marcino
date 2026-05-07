@@ -7,6 +7,7 @@ import About from "../Pages/AboutUs";
 import Contact from "../Pages/ContactUs";
 import Product from "../Pages/Product";
 import SingleProduct from "../ProductComponent/SingleProduct";
+import Cart from "../Pages/Cart";
 // import LandingPage from "../Pages/LandingPage";
 
 
@@ -23,6 +24,7 @@ function MainRoutes(){
                 <Route path="/Product" element = {<Product/>}/>
                 <Route path="/Contact" element = {<Contact/>}/>
                 <Route path="/Product/:id" element={<SingleProduct/>}></Route>
+                <Route path="/Cart" element = {<Cart/>}></Route>
             </Routes>
         
     )

@@ -2,6 +2,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { getProductById } from "../store/Action/ProductAction";
+import { addProInCart } from "../store/Action/CartAction";
 // import useCart from "../Context/useCart";
 
 const ProductCard = ({ data }) => {
@@ -37,8 +38,9 @@ const ProductCard = ({ data }) => {
           e.preventDefault();   // stops Link navigation
 
           dispatch(getProductById(data));
+          console.log(data)
           
-          // addToCart(data);
+          dispatch(addProInCart(data));
         }}
         className="bg-red-500 px-3 py-2 text-lg rounded-md text-white w-full cursor-pointer flex gap-2 items-center justify-center font-semibold"
       >
