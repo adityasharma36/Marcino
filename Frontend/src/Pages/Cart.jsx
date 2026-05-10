@@ -1,27 +1,303 @@
 
+import { LuNotebookText } from "react-icons/lu";
+import { MdDeliveryDining } from "react-icons/md";
+import { GiShoppingBag } from "react-icons/gi";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllProCart } from '../store/Action/CartAction';
+import { getAllCartProDetail, getAllProCart, removeCartProd, updateCartProd } from '../store/Action/CartAction';
+import { currentUser } from "../store/Action/UserAction";
+import { resetCartProdDetails } from '../store/Slice/CartSlice';
 
 const Cart = () => {
     const dispatch = useDispatch();
 
   const cartProduct = useSelector((state) => state?.cart?.allProductCarts);
   const cartList = Array.isArray(cartProduct) ? cartProduct : cartProduct?.data || [];
+  const allDetails = useSelector((state) =>  state?.cart?.allProdDetails);
+  const hasDetails = Array.isArray(allDetails) ? allDetails.length > 0 : Boolean(allDetails);
 
+  const getCartItem = (productId) =>
+    cartList.find((item) => {
+      const currentProductId = item?.productId || item?.product?._id || item?.product || item?._id || item?.id;
+      return currentProductId === productId;
+    });
+
+  const getCartQuantity = (productId) => getCartItem(productId)?.qty || getCartItem(productId)?.quantity || 1;
+
+  const increaseQuantity = (productId) => {
+    const nextQty = getCartQuantity(productId) + 1;
+    dispatch(updateCartProd({ productId, qty: nextQty }));
+  };
+
+  const decreaseQuantity = (productId) => {
+    const currentQty = getCartQuantity(productId);
+
+    if (currentQty <= 1) {
+      dispatch(removeCartProd(productId));
+      return;
+    }
+
+    dispatch(updateCartProd({ productId, qty: currentQty - 1 }));
+  };
+
+  const removeFromCart = (productId) => {
+    dispatch(removeCartProd(productId));
+  };
+
+  const currAdd = useSelector((state)=> state?.address?.addresses);
+
+  const userDetail = useSelector((state) => state?.user?.user);
+
+  console.log("userDetail",userDetail);
+
+  
+    console.log("currAdd",currAdd);
 
 
     useEffect(()=>{
         if(!cartList.length){
-      dispatch(getAllProCart());
+            dispatch(getAllProCart());
         }
-    },[dispatch,cartList.length])
+        if(!userDetail?.length){
+          dispatch(currentUser());
+        }
+
+
+    },[dispatch,cartList.length,userDetail?.length])
+   
+    useEffect(() => {
+      if (cartList.length && !hasDetails) {
+        dispatch(resetCartProdDetails());
+        cartList.forEach((data) => {
+          
+          const productRef = data?.productId || data?.product?._id || data?.product || data?._id || data?.id;
+
+          if (productRef) {
+            dispatch(getAllCartProDetail(productRef));
+          }
+        });
+      }
+    }, [hasDetails, cartList, dispatch])
 
 
     
   return (
-    <div>Cart</div>
+       <div className="mt-10 max-w-6xl mx-auto mb-5">
+      {allDetails.length > 0 ? (
+        <div>
+          <h1 className="font-bold text-xl">
+            My Cart ({allDetails?.length})
+          </h1>
+
+          {/* ================= CART ITEMS ================= */}
+          <div className="mt-10">
+            {allDetails.map((data) => {
+              const productId = data._id || data.id;
+
+              return (
+                <div
+                  key={productId}
+                  className="bg-gray-100 p-5 rounded-md flex items-center justify-between mt-3 w-full"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={data.images?.[0].url || data.thumbnail}
+                      alt={data.thumbnail}
+                      className="w-20 h-20 rounded-md"
+                    />
+
+                    <div>
+                      <h1 className="w-75 line-clamp-2">
+                        {data.title}
+                      </h1>
+                      <p className="text-red-500 font-semibold">
+                        {/* {formatINR((data?.amoount.price || 0) * USD_TO_INR_RATE)} */}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-red-500 text-white flex gap-2 rounded-md font-bold text-xl px-2">
+                    <button className="cursor-pointer" onClick={() => decreaseQuantity(productId)}>-</button>
+                    <span>{getCartQuantity(productId)}</span>
+                    <button className="cursor-pointer" onClick={() => increaseQuantity(productId)}>+</button>
+                  </div>
+
+                  <span className="hover:bg-white transition-all rounded-full p-3 hover:shadow-2xl">
+                    <FaRegTrashAlt className="text-red-500 text-2xl cursor-pointer" onClick={() => removeFromCart(productId)} />
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ================= DELIVERY + BILL SECTION ================= */}
+          <div className="grid grid-cols-2 gap-10 mt-8">
+
+            {/* ===== LEFT SIDE (Delivery Info) ===== */}
+            <div className="bg-gray-100 rounded-md p-7 space-y-3">
+              <h1 className="text-gray-800 font-bold text-xl">
+                Delivery Info
+              </h1>
+
+              <div className="flex flex-col space-y-1">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  className="p-2  border rounded-md"
+                  value={userDetail?.fullName?.firstName + " " + userDetail?.fullName?.lastName || ' '}
+                  readOnly
+                />
+              </div>
+
+              <div className="flex flex-col space-y-1">
+                <label>Address</label>
+                <input
+                  type="text"
+                  className="p-2 border rounded-md"
+                  value={currAdd[0]?.street || ""}
+                  readOnly
+                />
+              </div>
+
+              <div className="flex w-full gap-5">
+                <div className="flex flex-col space-y-1 w-full">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    className="p-2 border rounded-md w-full"
+                    value={currAdd[0]?.state || ""}
+                    readOnly
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-1 w-full">
+                  <label>PostCode</label>
+                  <input
+                    type="text"
+                    className="p-2 border rounded-md w-full"
+                    value={currAdd[0]?.zipcode || ""}
+                    readOnly
+                  />
+                </div>
+              </div>
+
+              <div className="flex w-full gap-5">
+                <div className="flex flex-col space-y-1 w-full">
+                  <label>Country</label>
+                  <input
+                    type="text"
+                    className="p-2 border  rounded-md w-full"
+                    value={currAdd[0]?.country || ""}
+                    readOnly
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-1 w-full">
+                  <label>Number</label>
+                  <input
+                    type="text"
+                    className="p-2 border rounded-md w-full"
+                    value={''}
+                  />
+                </div>
+              </div>
+
+              <button className="bg-red-500 text-white px-3 py-1 rounded-md mt-3 cursor-pointer">
+                Submit
+              </button>
+
+              <div className="flex items-center gap-3 my-4">
+                <div className="h-px bg-gray-300 w-full"></div>
+                <span className="text-sm text-gray-500 font-semibold">
+                  OR
+                </span>
+                <div className="h-px bg-gray-300 w-full"></div>
+              </div>
+
+              <div className="flex justify-center">
+                <button onClick ={()=>getcurrAdd[0]()} className="bg-red-500 text-white px-5 py-2 rounded-md">
+                  Detect Location
+                </button>
+              </div>
+            </div>
+
+            {/* ===== RIGHT SIDE (Bill Details) ===== */}
+            <div className="bg-white border-gray-100 shadow-xl rounded-md p-7 mt-4 space-y-2 h-max">
+              <h1 className="text-gray-800 font-bold text-xl">
+                Bill Details
+              </h1>
+
+              <div className="flex justify-between items-center">
+                <h1 className="flex gap-1 items-center text-gray-700">
+                  <LuNotebookText /> Items total
+                </h1>
+                <p>666</p>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <h1 className="flex gap-1 items-center text-gray-700">
+                  <MdDeliveryDining /> Delivery Charge
+                </h1>
+                { 0 === 0 ? (
+                  <p className="text-red-500 font-semibold">Free</p>
+                ) : (
+                  <p className="text-red-500 font-semibold">
+                    {/* {formatINR(shippingChargeInr)} */}
+                    </p>
+                )}
+              </div>
+
+              <div className="flex justify-between items-center">
+                <h1 className="flex gap-1 items-center text-gray-700">
+                  <GiShoppingBag /> Shipping Charge
+                </h1>
+                <p className="text-red-500 font-semibold">
+                  {/* {formatINR(shippingChargeInr)} */}
+                  </p>
+              </div>
+
+              <hr className="text-gray-200 mt-2" />
+
+              <div className="flex justify-between items-center">
+                <h1 className="font-semibold text-lg">Grand Total</h1>
+                <p className="font-semibold text-lg">
+                  {/* {formatINR(grandTotalInr)} */}
+                </p>
+              </div>
+
+              <div>
+                <h1 className="font-semibold text-gray-700 mb-3 mt-7">
+                  Apply Promo Code
+                </h1>
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    placeholder="Enter code"
+                    className="p-2 rounded-md w-full"
+                  />
+                  <button className="bg-white text-black border border-gray-200 cursor-pointer py-1 px-2 rounded-md">
+                    Apply
+                  </button>
+                </div>
+              </div>
+
+              <button
+                // onClick={handleCheckout}
+                className="bg-red-500 text-white px-3 py-2 rounded-md w-full cursor-pointer mt-3"
+              >
+                Proceed To Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="text-center mt-20 text-gray-600 text-xl">
+          cart is empty
+        </div>
+      )}
+    </div>
   )
 }
 

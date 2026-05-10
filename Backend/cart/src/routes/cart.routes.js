@@ -21,7 +21,11 @@ router.post("/items",
     cartController.addItemToCart
 )
 
-
+router.delete(
+    '/items/:productId',
+    createAuthMiddleware([ 'user' ]),
+    cartController.removeItemFromCart
+);
 router.patch(
     '/items/:productId',
     validation.validateUpdateCartItem,
