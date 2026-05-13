@@ -13,9 +13,11 @@ async function connect() {
         connection = await amqplib.connect(process.env.RABBIT_URL);
         console.log('Connected to RabbitMQ');
         channel = await connection.createChannel();
+        return connection;
     }
     catch (error) {
         console.error('Error connecting to RabbitMQ:', error);
+        throw error;
     }
 
 }
@@ -23,6 +25,10 @@ async function connect() {
 
 async function publishToQueue(queueName, data = {}) {
     if (!channel || !connection) await connect();
+
+    if (!channel) {
+        throw new Error('RabbitMQ channel is not available');
+    }
 
     await channel.assertQueue(queueName, {
         durable: true
@@ -36,6 +42,10 @@ async function publishToQueue(queueName, data = {}) {
 async function subscribeToQueue(queueName, callback) {
 
     if (!channel || !connection) await connect();
+
+    if (!channel) {
+        throw new Error('RabbitMQ channel is not available');
+    }
 
     await channel.assertQueue(queueName, {
         durable: true

@@ -10,8 +10,12 @@ import { getAllCartProDetail, getAllProCart, removeCartProd, updateCartProd } fr
 import { currentUser } from "../store/Action/UserAction";
 import { resetCartProdDetails } from '../store/Slice/CartSlice';
 
+import  notFound from '../assests/notfound.json'
+import Lottie from 'lottie-react'
+import useUserLocation from "../Utils/useUserLocation";
 const Cart = () => {
     const dispatch = useDispatch();
+  const { getLocation } = useUserLocation();
 
   const cartProduct = useSelector((state) => state?.cart?.allProductCarts);
   const cartList = Array.isArray(cartProduct) ? cartProduct : cartProduct?.data || [];
@@ -81,17 +85,28 @@ const Cart = () => {
       }
     }, [hasDetails, cartList, dispatch])
 
+    console.log("totalSum ", allDetails)
 
+    const totalSum = Array.isArray(allDetails)
+      ? allDetails.reduce((sum, data) => sum + Number(data?.price?.amount || 0), 0)
+      : 0;
+
+    console.log("ToalSum",totalSum)
+    // const totalSum = cartList.reduce((sum,prev)=>)
     
   return (
+
+    
        <div className="mt-10 max-w-6xl mx-auto mb-5">
-      {allDetails.length > 0 ? (
+ 
         <div>
           <h1 className="font-bold text-xl">
             My Cart ({allDetails?.length})
           </h1>
 
           {/* ================= CART ITEMS ================= */}
+
+          {allDetails.length>0 ? 
           <div className="mt-10">
             {allDetails.map((data) => {
               const productId = data._id || data.id;
@@ -131,6 +146,12 @@ const Cart = () => {
               );
             })}
           </div>
+: <div className='flex items-center justify-center mt-10 w-full'>
+              <Lottie animationData={notFound} />
+
+              {/* <h1>NO Items</h1> */}
+            </div>
+}
 
           {/* ================= DELIVERY + BILL SECTION ================= */}
           <div className="grid grid-cols-2 gap-10 mt-8">
@@ -217,7 +238,7 @@ const Cart = () => {
               </div>
 
               <div className="flex justify-center">
-                <button onClick ={()=>getcurrAdd[0]()} className="bg-red-500 text-white px-5 py-2 rounded-md">
+                <button onClick={getLocation} className="bg-red-500 text-white px-5 py-2 rounded-md">
                   Detect Location
                 </button>
               </div>
@@ -233,18 +254,18 @@ const Cart = () => {
                 <h1 className="flex gap-1 items-center text-gray-700">
                   <LuNotebookText /> Items total
                 </h1>
-                <p>666</p>
+                <p>{`${allDetails[0]?.price?.currency} ${totalSum}`}</p>
               </div>
 
               <div className="flex justify-between items-center">
                 <h1 className="flex gap-1 items-center text-gray-700">
                   <MdDeliveryDining /> Delivery Charge
                 </h1>
-                { 0 === 0 ? (
+                { totalSum > 100 ? (
                   <p className="text-red-500 font-semibold">Free</p>
                 ) : (
                   <p className="text-red-500 font-semibold">
-                    {/* {formatINR(shippingChargeInr)} */}
+                    {50}
                     </p>
                 )}
               </div>
@@ -254,7 +275,7 @@ const Cart = () => {
                   <GiShoppingBag /> Shipping Charge
                 </h1>
                 <p className="text-red-500 font-semibold">
-                  {/* {formatINR(shippingChargeInr)} */}
+                  { 4}
                   </p>
               </div>
 
@@ -263,7 +284,7 @@ const Cart = () => {
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold text-lg">Grand Total</h1>
                 <p className="font-semibold text-lg">
-                  {/* {formatINR(grandTotalInr)} */}
+                  {totalSum>100 ? totalSum+4 : totalSum+50+4}
                 </p>
               </div>
 
@@ -292,11 +313,7 @@ const Cart = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <div className="text-center mt-20 text-gray-600 text-xl">
-          cart is empty
-        </div>
-      )}
+      
     </div>
   )
 }

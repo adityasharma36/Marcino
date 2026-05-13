@@ -9,6 +9,7 @@ import Product from "../Pages/Product";
 import SingleProduct from "../ProductComponent/SingleProduct";
 import Cart from "../Pages/Cart";
 // import LandingPage from "../Pages/LandingPage";
+import AuthRoutes from "./AuthRoutes";
 
 
 function MainRoutes(){
@@ -19,12 +20,18 @@ function MainRoutes(){
                 <Route path = "/Login" element= {<Login/>}></Route>
                 {/* <Route path = "/home" element = {<Home/>}></Route> */}
                 <Route path="/" element = {<Home/>} ></Route>
-                <Route path="/Main" element = {<Main/>}></Route>
-                <Route path="/About" element ={<About/>}></Route>
-                <Route path="/Product" element = {<Product/>}/>
-                <Route path="/Contact" element = {<Contact/>}/>
-                <Route path="/Product/:id" element={<SingleProduct/>}></Route>
-                <Route path="/Cart" element = {<Cart/>}></Route>
+
+                
+
+
+                <Route path="/Main" element = {<AuthRoutes><Main/></AuthRoutes>}></Route>
+                <Route path="/About" element ={<AuthRoutes><About/></AuthRoutes>}></Route>
+                <Route path="/Product" element = {<AuthRoutes><Product/></AuthRoutes>}/>
+                <Route path="/Contact" element = {<AuthRoutes><Contact/></AuthRoutes>}/>
+                <Route path="/Product/:id" element={<AuthRoutes><SingleProduct/></AuthRoutes>}></Route>
+                <Route path="/Cart" element = {<AuthRoutes><Cart/></AuthRoutes>}></Route>
+                
+                
             </Routes>
         
     )

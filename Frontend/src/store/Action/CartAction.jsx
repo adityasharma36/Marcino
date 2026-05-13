@@ -2,6 +2,7 @@ import Axios from "../../Utils/axios";
 import CartAxios from "../../Utils/CartAxios";
 import ProductAxios from "../../Utils/productAxios";
 import { addToCart, allCartProd, allCartProdDetails, resetCartProdDetails } from "../Slice/CartSlice";
+import { toast } from "react-toastify";
 
 
 export const addProInCart = (credential, qty = 1) => async (dispatch) => {
@@ -15,6 +16,7 @@ export const addProInCart = (credential, qty = 1) => async (dispatch) => {
         const response = await CartAxios.post("/items", { productId, qty });
         dispatch(addToCart(response?.data));
         await dispatch(getAllProCart());
+        toast.success("Item added to cart");
 
         // console.log("Product has been add in cart ",response)
         return response?.data;
@@ -28,6 +30,7 @@ export const addProInCart = (credential, qty = 1) => async (dispatch) => {
             data: error.response?.data,
 
         });
+        toast.error(error.response?.data?.message || "Failed to add item to cart");
         throw error;
         
     }
@@ -103,6 +106,7 @@ export const updateCartProd = (credential) => async (dispatch) =>{
 
         const response = await CartAxios.patch(`/items/${productId}`, { qty });
         await dispatch(getAllProCart());
+        toast.success("Cart updated");
         return response?.data;
         
     } catch (error) {
@@ -111,6 +115,7 @@ export const updateCartProd = (credential) => async (dispatch) =>{
             status:error?.response?.status,
             data : error?.response?.data
         })
+        toast.error(error.response?.data?.message || "Failed to update cart item");
         throw error;
         
     }
@@ -127,6 +132,7 @@ export const removeCartProd = (credential) => async (dispatch) => {
         const response = await CartAxios.delete(`/items/${productId}`);
         dispatch(resetCartProdDetails());
         await dispatch(getAllProCart());
+        toast.success("Item removed from cart");
         return response?.data;
     } catch (error) {
         console.log('GetError during removeCartProd',{
@@ -134,6 +140,7 @@ export const removeCartProd = (credential) => async (dispatch) => {
             status:error?.response?.status,
             data : error?.response?.data
         });
+        toast.error(error.response?.data?.message || "Failed to remove item from cart");
         throw error;
     }
 }
