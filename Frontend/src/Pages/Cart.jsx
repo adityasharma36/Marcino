@@ -18,25 +18,51 @@ const Cart = () => {
   const { getLocation } = useUserLocation();
 
   const cartProduct = useSelector((state) => state?.cart?.allProductCarts);
+
   const cartList = Array.isArray(cartProduct) ? cartProduct : cartProduct?.data || [];
+  
   const allDetails = useSelector((state) =>  state?.cart?.allProdDetails);
-  const hasDetails = Array.isArray(allDetails) ? allDetails.length > 0 : Boolean(allDetails);
 
-  const getCartItem = (productId) =>
-    cartList.find((item) => {
-      const currentProductId = item?.productId || item?.product?._id || item?.product || item?._id || item?.id;
-      return currentProductId === productId;
-    });
+  const getCartProductId = (item) => item?.productId || item?.product?._id || item?.product || item?._id || item?.id;
 
-  const getCartQuantity = (productId) => getCartItem(productId)?.qty || getCartItem(productId)?.quantity || 1;
+  const cartItems = cartList
+    .map((item) => {
+      const productId = getCartProductId(item);
+      const productDetails = allDetails.find((detail) => (detail?._id || detail?.id) === productId);
+      const qty = item?.qty || item?.quantity || 1;
+
+      if (!productId) {
+        return null;
+      }
+
+      return {
+        ...productDetails,
+        ...item,
+        productId,
+        qty,
+        unitPrice: Number(productDetails?.price?.amount || item?.price?.amount || 0),
+        currency: productDetails?.price?.currency || item?.price?.currency || "",
+      };
+    })
+    .filter(Boolean);
+
+  const getItemTotal = (item) => Number(item?.unitPrice || 0) * Number(item?.qty || 1);
+
+  const getDeliveryCharge = (subtotal) => (subtotal > 100 ? 0 : 50);
+
+  const getShippingCharge = () => 4;
+
+  const getGrandTotal = (subtotal) => subtotal + getDeliveryCharge(subtotal) + getShippingCharge();
 
   const increaseQuantity = (productId) => {
-    const nextQty = getCartQuantity(productId) + 1;
+    const currentItem = cartList.find((item) => getCartProductId(item) === productId);
+    const nextQty = (currentItem?.qty || currentItem?.quantity || 1) + 1;
     dispatch(updateCartProd({ productId, qty: nextQty }));
   };
 
   const decreaseQuantity = (productId) => {
-    const currentQty = getCartQuantity(productId);
+    const currentItem = cartList.find((item) => getCartProductId(item) === productId);
+    const currentQty = currentItem?.qty || currentItem?.quantity || 1;
 
     if (currentQty <= 1) {
       dispatch(removeCartProd(productId));
@@ -72,28 +98,25 @@ const Cart = () => {
     },[dispatch,cartList.length,userDetail?.length])
    
     useEffect(() => {
-      if (cartList.length && !hasDetails) {
+        if (!cartList.length) {
+          dispatch(resetCartProdDetails());
+          return;
+      }
         dispatch(resetCartProdDetails());
         cartList.forEach((data) => {
-          
-          const productRef = data?.productId || data?.product?._id || data?.product || data?._id || data?.id;
+          const productRef = getCartProductId(data);
 
           if (productRef) {
             dispatch(getAllCartProDetail(productRef));
           }
         });
-      }
-    }, [hasDetails, cartList, dispatch])
+      }, [cartList, dispatch])
 
-    console.log("totalSum ", allDetails)
+      const totalSum = cartItems.reduce((sum, item) => sum + getItemTotal(item), 0);
+      const deliveryCharge = getDeliveryCharge(totalSum);
+      const shippingCharge = getShippingCharge();
+      const grandTotal = getGrandTotal(totalSum);
 
-    const totalSum = Array.isArray(allDetails)
-      ? allDetails.reduce((sum, data) => sum + Number(data?.price?.amount || 0), 0)
-      : 0;
-
-    console.log("ToalSum",totalSum)
-    // const totalSum = cartList.reduce((sum,prev)=>)
-    
   return (
 
     
@@ -101,15 +124,16 @@ const Cart = () => {
  
         <div>
           <h1 className="font-bold text-xl">
-            My Cart ({allDetails?.length})
+            My Cart ({cartItems.length})
           </h1>
 
           {/* ================= CART ITEMS ================= */}
 
-          {allDetails.length>0 ? 
+          {cartItems.length>0 ? 
           <div className="mt-10">
-            {allDetails.map((data) => {
-              const productId = data._id || data.id;
+            {cartItems.map((data) => {
+              const productId = data.productId;
+              const itemTotal = getItemTotal(data);
 
               return (
                 <div
@@ -119,7 +143,7 @@ const Cart = () => {
                   <div className="flex items-center gap-4">
                     <img
                       src={data.images?.[0].url || data.thumbnail}
-                      alt={data.thumbnail}
+                      alt={data.thumbnail || data.title}
                       className="w-20 h-20 rounded-md"
                     />
 
@@ -128,14 +152,14 @@ const Cart = () => {
                         {data.title}
                       </h1>
                       <p className="text-red-500 font-semibold">
-                        {/* {formatINR((data?.amoount.price || 0) * USD_TO_INR_RATE)} */}
+                        {`${data.currency} ${itemTotal}`}
                       </p>
                     </div>
                   </div>
 
                   <div className="bg-red-500 text-white flex gap-2 rounded-md font-bold text-xl px-2">
                     <button className="cursor-pointer" onClick={() => decreaseQuantity(productId)}>-</button>
-                    <span>{getCartQuantity(productId)}</span>
+                    <span>{data.qty}</span>
                     <button className="cursor-pointer" onClick={() => increaseQuantity(productId)}>+</button>
                   </div>
 
@@ -254,18 +278,18 @@ const Cart = () => {
                 <h1 className="flex gap-1 items-center text-gray-700">
                   <LuNotebookText /> Items total
                 </h1>
-                <p>{`${allDetails[0]?.price?.currency} ${totalSum}`}</p>
+                <p>{`${cartItems[0]?.currency || ""} ${totalSum}`}</p>
               </div>
 
               <div className="flex justify-between items-center">
                 <h1 className="flex gap-1 items-center text-gray-700">
                   <MdDeliveryDining /> Delivery Charge
                 </h1>
-                { totalSum > 100 ? (
+                { deliveryCharge === 0 ? (
                   <p className="text-red-500 font-semibold">Free</p>
                 ) : (
                   <p className="text-red-500 font-semibold">
-                    {50}
+                    {deliveryCharge}
                     </p>
                 )}
               </div>
@@ -275,7 +299,7 @@ const Cart = () => {
                   <GiShoppingBag /> Shipping Charge
                 </h1>
                 <p className="text-red-500 font-semibold">
-                  { 4}
+                  {shippingCharge}
                   </p>
               </div>
 
@@ -284,7 +308,7 @@ const Cart = () => {
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold text-lg">Grand Total</h1>
                 <p className="font-semibold text-lg">
-                  {totalSum>100 ? totalSum+4 : totalSum+50+4}
+                  {grandTotal}
                 </p>
               </div>
 

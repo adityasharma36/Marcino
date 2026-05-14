@@ -62,9 +62,9 @@ const ProductHeader = ({search , setSearch}) => {
           onChange={(e)=>setSearch(e.target.value)}
         placeholder='search products' className='w-1/2 px-4 py-2 bg-white/20 border border-white/30 text-white rounded-xl placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:scale-110'  />
         
-        <button className='text-2xl hover:border px-4 py-2 cursor-pointer ' onClick={() => navigate('/Cart')}>Order</button>
+        <button className='text-2xl hover:border px-4 py-2 cursor-pointer ' onClick={() => navigate('/Order')}>Order</button>
         
-        <h1 className='text-2xl hover:border-2 px-4 py-2 cursor-pointer hover:scale-105'>Cart</h1>
+        <h1 className='text-2xl hover:border-2 px-4 py-2 cursor-pointer hover:scale-105' onClick={() => navigate('/Cart')}>Cart</h1>
 
     </div>
   )
