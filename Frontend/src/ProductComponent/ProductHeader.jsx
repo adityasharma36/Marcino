@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useUserLocation from '../Utils/useUserLocation'
 import { useSelector } from 'react-redux';
 import { MapPin } from 'lucide-react'
@@ -6,9 +6,11 @@ import { MapPin } from 'lucide-react'
 import { CgClose } from 'react-icons/cg';
 import { FaCaretDown } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { LiaRobotSolid } from 'react-icons/lia';
 const ProductHeader = ({search , setSearch}) => {
   
     const {setOpenBox,openBox,getLocation}= useUserLocation();
+    const {slide,setSlide}= useState(false);
 
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ const ProductHeader = ({search , setSearch}) => {
       setOpenBox(!openBox);
     }
 
-    
+    useEffect(()=>{},[slide])
     
   return (
     <div className='flex gap-15 max-w-full p-5 items-center '>
@@ -65,7 +67,13 @@ const ProductHeader = ({search , setSearch}) => {
         <button className='text-2xl hover:border px-4 py-2 cursor-pointer ' onClick={() => navigate('/Order')}>Order</button>
         
         <h1 className='text-2xl hover:border-2 px-4 py-2 cursor-pointer hover:scale-105' onClick={() => navigate('/Cart')}>Cart</h1>
+        <LiaRobotSolid className='h-15 w-15 rounded-2xl bg-pink-300 cursor-pointer px-2 py-2  ' />{slide?
+         <div className='z-10 relative -right-2'>
 
+          <h1>Hello World</h1>
+
+        </div>: <div>
+          </div>}
     </div>
   )
 }
