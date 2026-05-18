@@ -34,7 +34,7 @@ const Order = () => {
         </div>
 
         <button
-          onClick={() => navigate('/Cart')}
+          onClick={() => navigate('/Product')}
           className="border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50"
         >
           Back to Cart

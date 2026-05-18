@@ -3,6 +3,7 @@ import { LuNotebookText } from "react-icons/lu";
 import { MdDeliveryDining } from "react-icons/md";
 import { GiShoppingBag } from "react-icons/gi";
 import { FaRegTrashAlt } from "react-icons/fa";
+import {LiaRobotSolid} from 'react-icons/lia'
 
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -121,9 +122,12 @@ const Cart = () => {
        <div className="mt-10 max-w-6xl mx-auto mb-5">
  
         <div>
-          <h1 className="font-bold text-xl">
+          <div className=" flex justify-between">
+            <h1 className="font-bold text-xl">
             My Cart ({cartItems.length})
           </h1>
+          <button className="uppercase font-bold border-2 px-4 py-2 cursor-pointer hover:scale-110 " onClick={()=>navigate('/Product')}>go back</button>
+          </div>
 
           {/* ================= CART ITEMS ================= */}
 
