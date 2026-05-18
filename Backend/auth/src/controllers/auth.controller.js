@@ -4,6 +4,17 @@ const jwt = require('jsonwebtoken');
 const redis = require("../db/redis")
 const { publishToQueue } = require("../broker/borker")
 
+const isProd = process.env.NODE_ENV === 'production';
+
+function getAuthCookieOptions() {
+    return {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? 'strict' : 'lax',
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+    };
+}
+
 
 async function registerUser(req, res) {
     try {
@@ -49,12 +60,7 @@ async function registerUser(req, res) {
             role: user.role
         }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-        })
+        res.cookie("token", token, getAuthCookieOptions())
 
 
         res.status(201).json({
@@ -98,12 +104,7 @@ async function loginUser(req, res) {
             role: user.role
         }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true,
-            maxAge: 24 * 60 * 60 * 1000,
-            sameSite: 'strict'
-        });
+        res.cookie('token', token, getAuthCookieOptions());
 
         return res.status(200).json({
             message: 'Logged in successfully',
@@ -138,11 +139,9 @@ async function logoutUser(req, res) {
     }
 
     res.clearCookie('token', {
-
         httpOnly: true,
-        
-        secure: true,
-
+        secure: isProd,
+        sameSite: isProd ? 'strict' : 'lax',
     });
 
     return res.status(200).json({ message: "Logged out successfully" });

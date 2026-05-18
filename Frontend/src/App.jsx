@@ -3,12 +3,14 @@
 
 import Login from "./Pages/Login";
 import MainRoutes from "./Routes/MainRoutes";
+import { ChatbotProvider } from "./Chatbot/ChatbotContext";
+import ChatbotWidget from "./Chatbot/ChatbotWidget";
 const App = () => {
   return (
-    <>
-    <MainRoutes/>
-    
-    </>
+    <ChatbotProvider>
+      <MainRoutes />
+      <ChatbotWidget />
+    </ChatbotProvider>
   )
 }
 

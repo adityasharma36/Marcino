@@ -3,8 +3,7 @@ const { z } = require("zod")
 const axios = require("axios")
 
 const searchProduct = tool(async ({ query, token }) => {
-
-    console.log("searchProduct called with data:", { query, token })
+    console.log("searchProduct called with:", { query })
 
     const response = await axios.get(`http://localhost:3001/api/products?q=${query}`, {
         headers: {

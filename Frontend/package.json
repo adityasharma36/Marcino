@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.2.4",
     "axios": "^1.15.2",
+    "dotenv": "^17.4.2",
     "lottie-react": "^2.4.1",
     "lucide-react": "^1.14.0",
     "react": "^19.2.0",
@@ -26,6 +27,7 @@
     "react-toastify": "^11.1.0",
     "remixicon": "^4.9.1",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.8.3",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {

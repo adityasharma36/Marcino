@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
   const productServiceUrl = env.VITE_PRODUCT_SERVICE_URL || 'http://localhost:3001'
   const cartServiceUrl = env.VITE_CART_SERVICE_URL || 'http://localhost:3002'
   const orderServiceUrl = env.VITE_ORDER_SERVICE_URL || 'http://localhost:3003'
+  const aiBuddyServiceUrl = env.VITE_AI_BUDDY_SERVICE_URL || 'http://localhost:3005'
   return {
     plugins: [react(), tailwindcss()],
     server: {
@@ -31,6 +32,12 @@ export default defineConfig(({ mode }) => {
           target: orderServiceUrl,
           changeOrigin: true,
           }
+        ,
+        '/api/socket': {
+          target: aiBuddyServiceUrl,
+          changeOrigin: true,
+          ws: true,
+        }
       },
     },
   }

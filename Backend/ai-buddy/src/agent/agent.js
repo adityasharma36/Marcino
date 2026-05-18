@@ -5,7 +5,8 @@ const tools = require("./tools")
 
 
 const model = new ChatGoogleGenerativeAI({
-    model: "gemini-2.0-flash",
+    // Override in .env via GEMINI_MODEL if needed.
+    model: process.env.GEMINI_MODEL || "models/gemini-flash-latest",
     temperature: 0.5,
 })
 
@@ -38,7 +39,9 @@ const graph = new StateGraph(MessagesAnnotation)
         return state
     })
     .addNode("chat", async (state, config) => {
-        const response = await model.invoke(state.messages, { tools: [ tools.searchProduct, tools.addProductToCart ] })
+        // NOTE: Gemini tool/function-calling may require thought signatures.
+        // To avoid runtime failures, we do plain chat here.
+        const response = await model.invoke(state.messages)
 
 
         state.messages.push(new AIMessage({ content: response.text, tool_calls: response.tool_calls }))
