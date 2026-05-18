@@ -6,21 +6,23 @@ import { FaRegTrashAlt } from "react-icons/fa";
 
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllCartProDetail, getAllProCart, removeCartProd, updateCartProd } from '../store/Action/CartAction';
+import { getAllCartProDetails, getAllProCart, removeCartProd, updateCartProd } from '../store/Action/CartAction';
 import { currentUser } from "../store/Action/UserAction";
 import { resetCartProdDetails } from '../store/Slice/CartSlice';
 
 import  notFound from '../assests/notfound.json'
 import Lottie from 'lottie-react'
 import useUserLocation from "../Utils/useUserLocation";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
     const dispatch = useDispatch();
   const { getLocation } = useUserLocation();
+  const navigate = useNavigate();
 
   const cartProduct = useSelector((state) => state?.cart?.allProductCarts);
 
   const cartList = Array.isArray(cartProduct) ? cartProduct : cartProduct?.data || [];
-  
+
   const allDetails = useSelector((state) =>  state?.cart?.allProdDetails);
 
   const getCartProductId = (item) => item?.productId || item?.product?._id || item?.product || item?._id || item?.id;
@@ -98,18 +100,14 @@ const Cart = () => {
     },[dispatch,cartList.length,userDetail?.length])
    
     useEffect(() => {
-        if (!cartList.length) {
+        const cartProductIds = cartList.map((data) => getCartProductId(data)).filter(Boolean);
+
+        if (!cartProductIds.length) {
           dispatch(resetCartProdDetails());
           return;
       }
-        dispatch(resetCartProdDetails());
-        cartList.forEach((data) => {
-          const productRef = getCartProductId(data);
 
-          if (productRef) {
-            dispatch(getAllCartProDetail(productRef));
-          }
-        });
+        dispatch(getAllCartProDetails(cartProductIds));
       }, [cartList, dispatch])
 
       const totalSum = cartItems.reduce((sum, item) => sum + getItemTotal(item), 0);
@@ -330,6 +328,7 @@ const Cart = () => {
 
               <button
                 // onClick={handleCheckout}
+                onClick={() => navigate('/Payment')}
                 className="bg-red-500 text-white px-3 py-2 rounded-md w-full cursor-pointer mt-3"
               >
                 Proceed To Checkout

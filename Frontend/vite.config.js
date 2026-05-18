@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
   const authServiceUrl = env.VITE_AUTH_SERVICE_URL || 'http://localhost:3000'
   const productServiceUrl = env.VITE_PRODUCT_SERVICE_URL || 'http://localhost:3001'
   const cartServiceUrl = env.VITE_CART_SERVICE_URL || 'http://localhost:3002'
-
+  const orderServiceUrl = env.VITE_ORDER_SERVICE_URL || 'http://localhost:3003'
   return {
     plugins: [react(), tailwindcss()],
     server: {
@@ -27,6 +27,10 @@ export default defineConfig(({ mode }) => {
           target: cartServiceUrl,
           changeOrigin: true,
         },
+          '/api/orders': {  
+          target: orderServiceUrl,
+          changeOrigin: true,
+          }
       },
     },
   }

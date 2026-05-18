@@ -9,6 +9,7 @@ import Product from "../Pages/Product";
 import SingleProduct from "../ProductComponent/SingleProduct";
 import Cart from "../Pages/Cart";
 import Order from "../Pages/Order";
+import Payment from "../Pages/Payment";
 // import LandingPage from "../Pages/LandingPage";
 import AuthRoutes from "./AuthRoutes";
 
@@ -32,6 +33,7 @@ function MainRoutes(){
                 <Route path="/Product/:id" element={<AuthRoutes><SingleProduct/></AuthRoutes>}></Route>
                 <Route path="/Cart" element = {<AuthRoutes><Cart/></AuthRoutes>}></Route>
                 <Route path="/Order" element = {<AuthRoutes><Order/></AuthRoutes>}></Route>
+                <Route path="/Payment" element = {<AuthRoutes><Payment/></AuthRoutes>}></Route>
                 
                 
             </Routes>

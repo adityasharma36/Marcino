@@ -1,4 +1,3 @@
-import Axios from "../../Utils/axios";
 import CartAxios from "../../Utils/CartAxios";
 import ProductAxios from "../../Utils/productAxios";
 import { addToCart, allCartProd, allCartProdDetails, resetCartProdDetails } from "../Slice/CartSlice";
@@ -64,8 +63,8 @@ export const getAllProCart = ()=> async (dispatch) =>{
     }
 }
 
-export const getAllCartProDetail = (credential) => async (dispatch) =>{
-     try {
+export const getAllCartProDetail = (credential) => async (dispatch) => {
+    try {
         const id = credential?._id || credential?.id || credential;
 
         if (!id) {
@@ -74,19 +73,55 @@ export const getAllCartProDetail = (credential) => async (dispatch) =>{
 
         const response = await ProductAxios.get(`/${id}`);
 
-        // console.log(response?.data?.data);
-
         dispatch(allCartProdDetails(response?.data?.data));
         return response?.data;
 
-        
-     } catch (error) {
-        console.log('GetAllCartProduct Details',{
-            message:error.message,
-            status:error.response?.status,
-            data:error.response?.data,
-        })
-     }
+    } catch (error) {
+        console.log('GetAllCartProduct Details', {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data,
+        });
+
+        throw error;
+    }
+}
+
+const getCartProductId = (item) => item?.productId || item?.product?._id || item?.product || item?._id || item?.id;
+
+export const getAllCartProDetails = (credentials = []) => async (dispatch) => {
+    try {
+        const productIds = credentials
+            .map((credential) => getCartProductId(credential) || credential)
+            .filter(Boolean);
+
+        if (!productIds.length) {
+            dispatch(resetCartProdDetails());
+            return [];
+        }
+
+        dispatch(resetCartProdDetails());
+
+        const responses = await Promise.all(
+            productIds.map((productId) => ProductAxios.get(`/${productId}`))
+        );
+
+        const details = responses
+            .map((response) => response?.data?.data)
+            .filter(Boolean);
+
+        dispatch(allCartProdDetails(details));
+        return details;
+
+    } catch (error) {
+        console.log('GetAllCartProduct Details batch error', {
+            message: error?.message,
+            status: error?.response?.status,
+            data: error?.response?.data,
+        });
+
+        throw error;
+    }
 }
 
 export const updateCartProd = (credential) => async (dispatch) =>{
