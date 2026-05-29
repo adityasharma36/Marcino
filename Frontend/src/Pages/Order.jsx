@@ -10,6 +10,8 @@ const Order = () => {
 
   const orders = useSelector((state) => state?.order?.orders)
   const orderArr = Array.isArray(orders) ? orders : orders?.data || []
+
+  // console.log(orders)
   const [expandedOrders, setExpandedOrders] = useState({})
 
   const toggleOrder = (orderId) => {
@@ -72,6 +74,7 @@ const Order = () => {
                     const product = item?.product && typeof item.product === 'object' ? item.product : null
                     const title = product?.title || product?.name || 'Item'
                     const imageUrl = product?.images?.[0]?.url || product?.thumbnail || ''
+                    console.log(imageUrl);
                     const itemPrice = item?.price?.amount ?? product?.price?.amount ?? ''
                     const itemCurrency = item?.price?.currency || currency
 
