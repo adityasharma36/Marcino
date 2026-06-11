@@ -1,6 +1,6 @@
 import React from 'react'
 import useUserLocation from '../Utils/useUserLocation'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MapPin } from 'lucide-react'
 
 import { CgClose } from 'react-icons/cg';
@@ -25,7 +25,7 @@ const ProductHeader = ({search , setSearch}) => {
   return (
     <div className='flex gap-15 max-w-full p-5 items-center '>
 
-        <p className='text-2xl hover:border-2 px-4 py-2 cursor-pointer'><span className='font-extrabold text-3xl text-red-500'>M</span>arcino</p>
+        <p className='text-2xl hover:border-2 px-4 py-2 cursor-pointer' onClick={()=>navigate('/Main')}><span className='font-extrabold text-3xl text-red-500'>M</span>arcino</p>
       
         <div className='flex gap-1 cursor-pointer py-2 px-4 hover:border-2 text-gray-700 items-center'>
             

@@ -12,6 +12,7 @@ import Order from "../Pages/Order";
 import Payment from "../Pages/Payment";
 // import LandingPage from "../Pages/LandingPage";
 import AuthRoutes from "./AuthRoutes";
+import DashBoard from "../Pages/DashBoard";
 
 
 function MainRoutes(){
@@ -29,6 +30,8 @@ function MainRoutes(){
                 <Route path="/Main" element = {<AuthRoutes><Main/></AuthRoutes>}></Route>
                 <Route path="/About" element ={<AuthRoutes><About/></AuthRoutes>}></Route>
                 <Route path="/Product" element = {<AuthRoutes><Product/></AuthRoutes>}/>
+                <Route path="/DashBoard" element = {<AuthRoutes><DashBoard/></AuthRoutes>}/>
+
                 <Route path="/Contact" element = {<AuthRoutes><Contact/></AuthRoutes>}/>
                 <Route path="/Product/:id" element={<AuthRoutes><SingleProduct/></AuthRoutes>}></Route>
                 <Route path="/Cart" element = {<AuthRoutes><Cart/></AuthRoutes>}></Route>

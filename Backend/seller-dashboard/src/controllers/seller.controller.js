@@ -6,9 +6,9 @@ const paymentModel = require("../models/payment.model")
 
 async function getMetrics(req, res) {
     try {
+        console.log("Inside metrics")
         const seller = req.user;
 
-        // Get all products for this seller
         const products = await productModel.find({ seller: seller._id });
         const productIds = products.map(p => p._id);
 

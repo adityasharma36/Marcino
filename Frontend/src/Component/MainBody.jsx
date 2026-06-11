@@ -15,13 +15,13 @@ function MainBody() {
   return (
     <div className="h-fit">
 
-      <div className="relative">
+      <div className="relative ">
         <img src={banner} alt="" />
-        <div className="absolute top-50 left-25">
+        <div className="absolute top-1 left-5 p-2 lg:top-50 lg:left-25  flex flex-col items-start lg:flex-none">
           <h1 className="text-lg font-extralight ">BEST SALE OF THE YEAR</h1>
-        <h1 className="text-5xl line-clamp-2 w-[52%] m-0.5 font-extralight">GET FREE BONUS BOX ($240 VALUE)</h1>
-        <p className="text-xl my-2 font-normal line-clamp-2 w-[60%]">Get curated boxes of your favorite brands up to 70% off, plus a FREE $250 Bonus Box!</p>
-        <button onClick={getStarted} className=" hover:translate-y-2 hover:translate-x-2 bg-amber-600 hover:bg-linear-to-r from-red-500 to-purple-500 text-white p-2 
+          <h1 className="text-xl font-bold line-clamp-2 w-[52%] m-0.5 ">GET FREE BONUS BOX ($240 VALUE)</h1>
+          <p className="text-md my-2 font-normal line-clamp-2 max-w-full lg:w-[72%] lg:text-2xl lg:font-extralight">Get curated boxes of your favorite brands up to 70% off, plus a FREE $250 Bonus Box!</p>
+            <button onClick={getStarted} className=" mb hover:translate-y-2 hover:translate-x-2 bg-amber-600 hover:bg-linear-to-r from-red-500 to-purple-500 text-white p-2 
         rounded-md hover:scale-110 border border-amber-700 transition-all shadow-2xl shadow-amber-200 cursor-pointer 
            ">GET STARTED</button>
         </div>

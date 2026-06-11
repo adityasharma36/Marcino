@@ -6,6 +6,7 @@ import productReducer from './Slice/ProductSlice'
 import addressReducer from './Slice/AddressSlice'
 import cartReducer from './Slice/CartSlice'
 import orderReducer from './Slice/OrderSlice'
+import dashboardReducer from './Slice/DashBoardSlice'
 export const store = configureStore({
 
     reducer:{
@@ -14,7 +15,8 @@ export const store = configureStore({
         product:productReducer,
         address:addressReducer,
         cart:cartReducer,
-        order:orderReducer
+        order:orderReducer,
+        dashboard:dashboardReducer
 
     }
 

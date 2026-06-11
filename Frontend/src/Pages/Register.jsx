@@ -71,7 +71,7 @@ function Register(){
 
     return (
         
-        <div className="h-screen relative flex flex-col  items-center justify-center bg-gray-200">
+        <div className="h-screen relative flex flex-col p-5 items-center justify-center bg-gray-200">
 
             <form onSubmit={handleSubmit(registerHandler)} className="bg-white w-full max-w-md shadow-lg rounded-xl p-8 space-y-4">
 

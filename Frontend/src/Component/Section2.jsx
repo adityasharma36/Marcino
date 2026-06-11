@@ -12,23 +12,23 @@ const Section2 = () => {
     
   }
   return (
-    <div className='w-full h-screen flex flex-col items-center justify-center'>
+    <div className='w-full  flex flex-col items-center justify-center m-3 '>
 
         <div className='w-full flex items-center justify-center'>
-            <h1 className='font-extralight text-xl text-red-400 '>HOW IT WORK</h1>
+            <h1 className='font-extralight text-2xl text-red-400 '>HOW IT WORK</h1>
         </div>
-        <div className='w-full flex justify-center items-center'>
-            <h1 className='w-[25%]  text-center line-clamp-3 text-4xl'>Amazing Brands . Huge Saving . All Year Long .</h1>
+        <div className='w-full flex justify-center items-center m-2'>
+            <h1 className='  text-center text-3xl'>Amazing Brands <br/> Huge Saving <br/> All Year Long </h1>
         </div>
-        <div className='w-full flex p-10'>
-            <div className='flex flex-col w-1/2'>
-                <h1 className='text-2xl bg-blue-300 text-center font-light'>Free Bonus Box With Annual Plan ($250 Values)</h1>
+        <div className='w-full flex flex-col lg:flex-row  items-center p-10 '>
+            <div className='flex flex-col w-full'>
+                <h1 className='text-2xl bg-blue-300 text-center font-light rounded-md'>Free Bonus Box With Annual Plan ($250 Values)</h1>
                 <div className='h-fit relative'>
-                    <img src={cirImg} alt="" className='h-[25%] w-[15%] absolute top-[10%] left-[5%] object-fill'/>
-                    <img src={mainImg} alt='' className='h-full w-full'/>
+                    <img src={cirImg} alt="" className='h-[25%] w-[15%] absolute top-[10%] left-[5%]  object-fill'/>
+                    <img src={mainImg} alt='' className=' w-full  rounded-md'/>
                 </div>
             </div>
-            <div className='flex flex-col items-center justify-center  w-1/2'>
+            <div className='flex flex-col items-center justify-center  w-full'>
                 <div className='flex flex-col m-5  justify-center items-start'>
                     <h1 className='text-amber-600'><i class="ri-gift-line"></i>Today</h1>
                     <p className=' text-xl text-start'>Choose six full-size products from premium brands you love.<br/> Get up to $350 of value for as low as $65.</p>

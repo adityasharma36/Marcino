@@ -12,6 +12,8 @@ export default defineConfig(({ mode }) => {
   const cartServiceUrl = env.VITE_CART_SERVICE_URL || 'http://localhost:3002'
   const orderServiceUrl = env.VITE_ORDER_SERVICE_URL || 'http://localhost:3003'
   const aiBuddyServiceUrl = env.VITE_AI_BUDDY_SERVICE_URL || 'http://localhost:3005'
+
+  const sellerDashboardServiceUrl = env.VITE_SELLER_DASHBOARD_SERVICE_URL || 'http://localhost:3007'
   return {
     plugins: [react(), tailwindcss()],
     server: {
@@ -23,6 +25,7 @@ export default defineConfig(({ mode }) => {
         '/api/products': {
           target: productServiceUrl,
           changeOrigin: true,
+          
         },
         '/api/cart': {
           target: cartServiceUrl,
@@ -37,6 +40,11 @@ export default defineConfig(({ mode }) => {
           target: aiBuddyServiceUrl,
           changeOrigin: true,
           ws: true,
+        },
+        '/api/seller/dashboard':{
+          target:sellerDashboardServiceUrl,
+          changeOrigin:true,
+          
         }
       },
     },

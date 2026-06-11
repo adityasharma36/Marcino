@@ -1,11 +1,25 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { logoutUser } from '../store/Action/UserAction';
+import { currentUser, logoutUser } from '../store/Action/UserAction';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate  = useNavigate();
+
+  const user = useSelector((state)=>state?.user?.user);
+
+  console.log(user);
+
+  
+
+  useEffect(()=>{
+
+    if(!user){
+      useDispatch(currentUser);
+    }
+
+  },[user.length])
   return (
     <div className='flex items-center justify-between p-4 z-50 fixed w-full bg-gray-900 '>
       <div className='flex items-center justify-center gap-3 '>
@@ -14,6 +28,8 @@ const Header = () => {
      
       </div>
           <ul className='flex items-center gap-10 '>
+
+            {user?.role != 'user'? <li className='cursor-pointer text-2xl font-bold hover:scale-110 ' onClick={()=>navigate('/DashBoard')} >DashBoard</li>:""}
             <li className='cursor-pointer text-2xl font-bold hover:scale-110 ' onClick={()=>navigate('/')}>Home</li>
             <li className='cursor-pointer text-2xl font-bold hover:scale-110' onClick={()=>navigate('/Product')}>Product</li>
             

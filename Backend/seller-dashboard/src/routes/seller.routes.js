@@ -6,11 +6,11 @@ const router = express.Router();
 
 
 
-router.get("/metrics", createAuthMiddleware([ "seller" ], controller.getMetrics))
+router.get("/metrics", createAuthMiddleware([ "seller" ]), controller.getMetrics)
 
-router.get("/orders", createAuthMiddleware([ "seller" ], controller.getOrders))
+router.get("/orders", createAuthMiddleware([ "seller" ]), controller.getOrders)
 
-router.get("/products", createAuthMiddleware([ "seller" ], controller.getProducts))
+router.get("/products", createAuthMiddleware([ "seller" ]), controller.getProducts)
 
 
 module.exports = router;
