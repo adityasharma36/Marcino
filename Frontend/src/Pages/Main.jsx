@@ -40,7 +40,7 @@ const Main = () => {
 
       {productList.length > 0 ?
         <div>
-          <h1 className="text-2xl font-extralight m-6">Product Pagess</h1>
+          {/* <h1 className="text-2xl font-bold m-6">Product Pages</h1> */}
 
           <InfiniteScroll
             dataLength={infiniteProducts.length}
@@ -101,7 +101,7 @@ const Main = () => {
     </footer>}
             endMessage={<p style={{ textAlign: 'center' }}>All items loaded.</p>}
           >
-            <div className="grid grid-cols-4 gap-4 m-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 m-3">
               
             {infiniteProducts.map((item, index) => (
              <Suspense
